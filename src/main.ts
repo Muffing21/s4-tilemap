@@ -23,7 +23,7 @@ const imageUrls = [
 
 
 //defining the size of the main grid
-const numTiles = 32;
+const numTiles = 32*2;
 const tileSize = gridCanvas.width / numTiles;
 
 
@@ -31,18 +31,24 @@ const tileSize = gridCanvas.width / numTiles;
 const numSelectables = imageUrls.length;
 const selectHeight = selectCanvas.height / numSelectables;
 
+// function functieArray(imgArr: HTMLImageElement[]){
+//     for (let i = 0; i < imgArr.length; i++) {
+//         imgArr[i];
+//     }
+//     document.getElementById("pozeGallery").innerHTML = imgArray.src;
+// };
 
 
+
+//My idea was instead of having a nested array, we have one big image array. However it is not working for some reason lol
 //creating the tilemap nested array
-let tilemap: HTMLImageElement[][] = new Array(numTiles);
+let tilemap: HTMLImageElement[] = new Array(numTiles);
+let img = new Image();
 
 for(let i = 0; i < numTiles; i++) {
-    let row = new Array(numTiles);
-    for (let j = 0; j < numTiles; j++) {
-        row[j] = new Image();
-        row[j].src = "/tile1.png";
-    }
-    tilemap[i] = row;
+    img = new Image();
+    img.src = "/tile1.png"; 
+    tilemap.push(img);
 }
 
 //track the selected tile
@@ -69,7 +75,7 @@ function redrawTilemap()
   gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
     for (let i = 0; i < numTiles; i++) {
         for (let j = 0; j < numTiles; j++) {
-            drawTexture(i, j, gridCtx, tilemap[i][j], gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
+            drawTexture(i, j, gridCtx, tilemap[i], gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
         }
     }
 }
@@ -79,7 +85,7 @@ gridCanvas.addEventListener("click", (e) => {
     const coordX = Math.trunc(e.offsetX / tileSize);
     const coordY = Math.trunc(e.offsetY / tileSize);
 
-    tilemap[coordX][coordY].src = currentTile;
+    tilemap[coordX].src = currentTile;
     redrawTilemap();
 })
 
